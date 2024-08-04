@@ -1,11 +1,10 @@
 import Joi from 'joi';
 
-const userSchema = Joi.object({
+export const userSchema = Joi.object({
   first_name: Joi.string()
     .min(3)
     .max(20)
     .pattern(/^[a-zA-Z\s]*$/)
-    .required()
     .messages({
       'string.base': 'First name must contain only letters',
       'string.empty': 'First name is required',
@@ -18,7 +17,6 @@ const userSchema = Joi.object({
     .min(3)
     .max(20)
     .pattern(/^[a-zA-Z\s]*$/)
-    .required()
     .messages({
       'string.base': 'Last name must contain only letters',
       'string.empty': 'Last name is required',
@@ -31,7 +29,6 @@ const userSchema = Joi.object({
     .min(3)
     .max(20)
     .pattern(/^[a-zA-Z0-9]*$/)
-    .required()
     .messages({
       'string.base': 'Username must contain only letters and numbers',
       'string.empty': 'Username is required',
@@ -40,6 +37,26 @@ const userSchema = Joi.object({
       'string.pattern.base': 'Username must contain only letters and numbers',
       'any.required': 'Username is required',
     }),
+  email: Joi.string()
+    .pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+    .messages({
+      'string.pattern.base': 'Email must have a valid format',
+      'any.required': 'Email is required',
+      'string.empty': 'Email is not allowed to be empty',
+    }),
+  password: Joi.string()
+    .min(8)
+    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\-]).{8,}$/)
+    .messages({
+      'string.pattern.base':
+        'Password must contain at least one uppercase, lowercase, number and special character',
+      'any.required': 'Password is required',
+      'string.min': 'Password must have at least 8 chars',
+      'string.empty': 'Password is not allowed to be empty',
+    }),
+});
+
+export const loginSchema = Joi.object({
   email: Joi.string()
     .pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
     .required()
@@ -61,4 +78,11 @@ const userSchema = Joi.object({
     }),
 });
 
-export default userSchema;
+export const registerSchema = Joi.object({
+  first_name: userSchema.extract('first_name'),
+  last_name: userSchema.extract('last_name'),
+  username: userSchema.extract('username'),
+  email: userSchema.extract('email'),
+  password: userSchema.extract('password'),
+  repeat_password: Joi.ref('password'),
+});

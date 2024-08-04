@@ -35,3 +35,17 @@ export interface UsersState {
 export interface PostsState {
     posts: Post[];
 }
+
+export interface signupData{
+    first_name: string,
+    last_name: string,
+    username: string,
+    email: string,
+    password: string,
+    repeat_password: string
+}
+
+export interface loginData{
+    email: string,
+    password: string
+}
