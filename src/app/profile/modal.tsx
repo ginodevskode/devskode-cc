@@ -18,7 +18,7 @@ const Modal = ({
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-10 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-      <div className="w-9/12 max-w-3xl bg-black p-2 rounded grid gap-10">
+      <div className="w-9/12 max-w-3xl p-8 bg-black rounded grid gap-10">
         <div className="flex justify-between">
           <div>
             <button className="mr-2" onClick={toggleModalOpen}>
@@ -26,7 +26,6 @@ const Modal = ({
             </button>
             <span className="text-xl font-bold">Edit profile</span>
           </div>
-
           <button
             className="bg-white px-3 py-1 text-black font-bold rounded-full"
             onClick={toggleModalOpen}
@@ -92,12 +91,12 @@ const Modal = ({
           }}
         />
         <TextField
-          label="Locality"
+          label="Location"
           variant="outlined"
           fullWidth
-          {...register("locality")}
-          error={!!errors.locality}
-          helperText={errors.locality ? String(errors.locality.message) : ""}
+          {...register("location")}
+          error={!!errors.location}
+          helperText={errors.location ? String(errors.location.message) : ""}
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
