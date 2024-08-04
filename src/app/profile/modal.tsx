@@ -1,20 +1,32 @@
 import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const Modal = ({
   toggleModalOpen,
-  photo_url,
-  name,
+  user,
 }: {
-  photo_url: string;
-  name: string;
+  user: {
+    id: number;
+    photo_url: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+  };
   toggleModalOpen: () => void;
 }) => {
   const {
     register,
     formState: { errors },
+    setValue,
   } = useForm();
+
+  useEffect(() => {
+    setValue("first_name", user.first_name);
+  }, [user, setValue]);
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-10 bg-gray-500 bg-opacity-50 flex justify-center items-center">
@@ -34,7 +46,7 @@ const Modal = ({
           </button>
         </div>
         <Image
-          src={photo_url}
+          src={user.photo_url}
           alt="profile picture"
           width={90}
           height={90}

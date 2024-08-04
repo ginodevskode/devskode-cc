@@ -15,19 +15,12 @@ const Profile = () => {
   };
 
   const toggleModalOpen = () => {
-    console.log("edit profile");
     setIsModalOpen(!isModalOpen);
   };
 
   return (
     <section className="text-white">
-      {isModalOpen && (
-        <Modal
-          toggleModalOpen={toggleModalOpen}
-          photo_url={user.photo_url}
-          name={user.first_name}
-        />
-      )}
+      {isModalOpen && <Modal toggleModalOpen={toggleModalOpen} user={user} />}
       <div className="flex flex-col m-4">
         <div className="flex items-center mb-4">
           <IconButton
