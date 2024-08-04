@@ -2,10 +2,13 @@
 import { Button, TextField, Typography } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { useForm } from "react-hook-form";
-import { loginSchema } from "@/validations/users";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Link from "next/link";
-import { loginData } from "@/utils/interfaces";
+import { useState } from "react";
+
+import { loginSchema } from "@/validations/users";
+import { loginData, ToastStyle } from "@/utils/interfaces";
+import { Toast } from "@/sharedComponents/toast";
 
 const Login = () => {
   const {
@@ -16,6 +19,10 @@ const Login = () => {
     mode: "onChange",
     resolver: joiResolver(loginSchema),
   });
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [type, setType] = useState<ToastStyle>();
 
   const onSubmit = (data: loginData) => {
     console.log(data);
@@ -123,6 +130,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+      <Toast message={message} type={type} open={open} setOpen={setOpen} />
     </div>
   );
 };

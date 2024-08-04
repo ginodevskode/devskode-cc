@@ -49,3 +49,12 @@ export interface loginData{
     email: string,
     password: string
 }
+
+export interface ToastProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    message: string;
+    type: "success" | "error" | "warning" | "info" | undefined;
+}
+
+export type ToastStyle = "success" | "error" | "warning" | "info" | undefined;

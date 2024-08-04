@@ -3,9 +3,12 @@ import { Button, TextField, Typography } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { registerSchema } from "@/validations/users";
 import Link from "next/link";
-import { signupData } from "@/utils/interfaces";
+import { useState } from "react";
+
+import { registerSchema } from "@/validations/users";
+import { signupData, ToastStyle } from "@/utils/interfaces";
+import { Toast } from "@/sharedComponents/toast";
 
 const Register = () => {
   const {
@@ -16,8 +19,12 @@ const Register = () => {
     mode: "onChange",
     resolver: joiResolver(registerSchema),
   });
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [type, setType] = useState<ToastStyle>();
 
   const onSubmit = (data: signupData) => {
+    console.log(data);
   };
 
   return (
@@ -234,6 +241,7 @@ const Register = () => {
           </div>
         </form>
       </div>
+      <Toast message={message} type={type} open={open} setOpen={setOpen} />
     </div>
   );
 };
