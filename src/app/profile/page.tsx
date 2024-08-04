@@ -34,7 +34,7 @@ const Profile = () => {
                 {user.first_name} {user.last_name}
               </h1>
               <Image
-                src="https://via.placeholder.com/20"
+                src="/VerifiedAccount.png"
                 alt="twitter verification"
                 width={20}
                 height={20}
@@ -60,7 +60,7 @@ const Profile = () => {
             {user.first_name} {user.last_name}
           </span>
           <Image
-            src="https://via.placeholder.com/20"
+            src="/VerifiedAccount.png"
             alt="twitter verification"
             width={20}
             height={20}
