@@ -42,3 +42,26 @@ export interface Profile{
     location: string,
     web: string,
 }
+
+export interface signupData{
+    first_name: string,
+    last_name: string,
+    username: string,
+    email: string,
+    password: string,
+    repeat_password: string
+  }
+
+export interface loginData{
+    email: string,
+    password: string
+}
+
+export interface ToastProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    message: string | undefined;
+    type: "success" | "error" | "warning" | "info" | undefined;
+}
+
+export type ToastStyle = "success" | "error" | "warning" | "info" | undefined;

@@ -2,20 +2,42 @@
 import { Button, TextField, Typography } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { useForm } from "react-hook-form";
-import userSchema from "@/validations/users";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Link from "next/link";
+import { useState } from "react";
+
+import { loginSchema } from "@/validations/users";
+import { loginData, ToastStyle } from "@/utils/interfaces";
+import { Toast } from "@/sharedComponents/toast";
 
 const Login = () => {
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "onChange", resolver: joiResolver(userSchema) });
+  } = useForm<loginData>({
+    mode: "onChange",
+    resolver: joiResolver(loginSchema),
+  });
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [type, setType] = useState<ToastStyle>();
+
+  const onSubmit = (data: loginData) => {
+    console.log(data);
+    setOpen(true);
+    setMessage("Login successful!");
+    setType("success");
+  };
 
   return (
     <div className="flex min-h-screen flex-col justify-center">
       <div className="w-full flex justify-center">
-        <form className="p-10 max-w-3xl w-full">
+        <form
+          className="p-10 max-w-3xl w-full"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="mb-4 flex flex-col gap-6">
             <TwitterIcon sx={{ color: "#1DA1F2", fontSize: "50px" }} />
             <Typography
@@ -110,6 +132,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+      <Toast message={message} type={type} open={open} setOpen={setOpen} />
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { profileSchema } from "@/validations/users";
-import { Profile, User } from "@/utils/interfaces";
+import { Profile, User, ToastStyle } from "@/utils/interfaces";
+import { Toast } from "@/sharedComponents/toast";
 
 const Modal = ({
   toggleModalOpen,
@@ -22,13 +23,21 @@ const Modal = ({
     mode: "onChange",
     resolver: joiResolver(profileSchema),
   });
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string | undefined>(undefined);
+  const [type, setType] = useState<ToastStyle>();
 
   useEffect(() => {
     setValue("first_name", user.first_name);
   }, [user, setValue]);
 
   const onSubmit = (data: Profile) => {
-    toggleModalOpen();
+    setOpen(true);
+    setMessage("Profile updated successfully!");
+    setType("success");
+    setTimeout(() => {
+      toggleModalOpen();
+    }, 2000);
   };
 
   return (
@@ -39,7 +48,7 @@ const Modal = ({
       >
         <div className="flex justify-between">
           <div>
-            <button className="mr-2" onClick={toggleModalOpen}>
+            <button type="button" className="mr-2" onClick={toggleModalOpen}>
               X
             </button>
             <span className="text-xl font-bold">Edit profile</span>
@@ -157,6 +166,7 @@ const Modal = ({
           }}
         />
       </form>
+      <Toast message={message} type={type} open={open} setOpen={setOpen} />
     </div>
   );
 };

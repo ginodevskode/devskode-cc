@@ -3,18 +3,36 @@ import { Button, TextField, Typography } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import userSchema from "@/validations/users";
 import Link from "next/link";
+import { useState } from "react";
+
+import { registerSchema } from "@/validations/users";
+import { signupData, ToastStyle } from "@/utils/interfaces";
+import { Toast } from "@/sharedComponents/toast";
 
 const Register = () => {
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "onChange", resolver: joiResolver(userSchema) });
+  } = useForm<signupData>({
+    mode: "onChange",
+    resolver: joiResolver(registerSchema),
+  });
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [type, setType] = useState<ToastStyle>();
+
+  const onSubmit = (data: signupData) => {
+    console.log(data);
+    setOpen(true);
+    setMessage("Registration successful!");
+    setType("success");
+  };
 
   return (
     <div className="flex min-h-screen flex-col justify-center">
-      <form className="p-10">
+      <form className="p-10" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4 flex flex-col gap-6">
           <TwitterIcon sx={{ color: "#1DA1F2", fontSize: "50px" }} />
           <Typography
@@ -174,7 +192,9 @@ const Register = () => {
                 {...register("repeat_password")}
                 error={!!errors.repeat_password}
                 helperText={
-                  errors.password ? String(errors.password.message) : ""
+                  errors.repeat_password
+                    ? String(errors.repeat_password.message)
+                    : ""
                 }
                 sx={{
                   "& .MuiOutlinedInput-root": {
@@ -221,6 +241,7 @@ const Register = () => {
           </div>
         </div>
       </form>
+      <Toast message={message} type={type} open={open} setOpen={setOpen} />
     </div>
   );
 };
