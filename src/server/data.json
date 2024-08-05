@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": "4de4cd10-957f-4d5c-8cbf-faf71abd3bf8",
+      "first_name": "Gino ",
+      "last_name": "Boca",
+      "username": "gnoboca",
+      "email": "gino.boca@devskode.com",
+      "password": "$2a$10$PS99ER9fsMzfZYOJYWrBt.Lpl9DrmxxNYE1Cvm/Xe0oQU5QiqwCZS"
+    },
+    {
+      "id": "8a9557ee-1179-4297-a1a0-6998e3cc2619",
+      "first_name": "Juan",
+      "last_name": "Tilatti",
+      "username": "jctdevskode",
+      "email": "juan.tilatti@devskode.com",
+      "password": "$2a$10$Q9sFXllq7CXNYl3s9nfJJOTsRmBErjsMbOtzYpFH8CghqmUDopi4G"
+    },
+    {
+      "id": "5944b153-bcfb-4513-ba24-5a715a3d4ca9",
+      "first_name": "Juan",
+      "last_name": "Durante",
+      "username": "lucho",
+      "email": "luciano.fraile@devskode.com",
+      "password": "$2a$10$//qGt1zwZIooIsi3gHpohe8UbUTR8SwH8SpiWd8dcz9Gf3Fbq.Psq"
+    }
+  ],
+  "posts": []
+}

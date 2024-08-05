@@ -44,7 +44,7 @@ export const userSchema = Joi.object({
       'any.required': 'Email is required',
       'string.empty': 'Email is not allowed to be empty',
     }),
-  password: Joi.string()
+    password: Joi.string()
     .min(8)
     .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\-]).{8,}$/)
     .messages({
@@ -53,6 +53,21 @@ export const userSchema = Joi.object({
       'any.required': 'Password is required',
       'string.min': 'Password must have at least 8 chars',
       'string.empty': 'Password is not allowed to be empty',
+    }),
+    repeat_password: Joi.any()
+    .valid(Joi.ref('password'))
+    .required()
+    .messages({
+        'any.only': 'Passwords do not match',
+        'any.required': 'Repeat password is required',
+    })
+    .error(errors => {
+      return errors.map(err => {
+        if (err.code === 'any.only') {
+          err.message = 'Passwords do not match';
+        }
+        return err;
+      });
     }),
 });
 

@@ -1,5 +1,11 @@
 "use client";
-import { Button, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Typography,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -9,6 +15,9 @@ import { useState } from "react";
 import { registerSchema } from "@/validations/users";
 import { signupData, ToastStyle } from "@/utils/interfaces";
 import { Toast } from "@/sharedComponents/toast";
+
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
   const {
@@ -22,6 +31,16 @@ const Register = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<ToastStyle>();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const handleClickShowRepeatPassword = () => {
+    setShowRepeatPassword((prev) => !prev);
+  };
 
   const onSubmit = async (data: signupData) => {
     const { first_name, last_name, username, email, password } = data;
@@ -187,13 +206,27 @@ const Register = () => {
                 <TextField
                   label="Password"
                   variant="outlined"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   fullWidth
                   {...register("password")}
                   error={!!errors.password}
                   helperText={
                     errors.password ? String(errors.password.message) : ""
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                          sx={{ color: "white" }}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {
@@ -216,13 +249,29 @@ const Register = () => {
                 <TextField
                   label="Repeat Password"
                   variant="outlined"
-                  type="password"
+                  type={showRepeatPassword ? "text" : "password"}
                   fullWidth
                   {...register("repeat_password")}
-                  error={!!errors.password}
+                  error={!!errors.repeat_password}
                   helperText={
-                    errors.password ? String(errors.password.message) : ""
+                    errors.repeat_password
+                      ? String(errors.repeat_password.message)
+                      : ""
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowRepeatPassword}
+                          edge="end"
+                          sx={{ color: "white" }}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {

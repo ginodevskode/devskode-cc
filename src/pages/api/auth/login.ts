@@ -1,28 +1,42 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import fs from 'fs';
-import path from 'path';
+
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { User } from '@/utils/interfaces';
+import handleUser from '@/server/crud';
+
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET;
+
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined');
+  }
+
   if (req.method === 'POST') {
     const { email, password } = req.body;
-    console.log(email, password)
 
-    const filePath = path.join(process.cwd(), 'src', 'data.json');
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    const data = JSON.parse(fileContents);
-    
-    const user = data.users.find((user: User) => user.email === email && user.password === password);
-    
-
-    if (user) {
-      res.status(200).json({ message: 'Login successful' });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+   
+    const user = await handleUser.searchByEmail(email);
+   
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
     }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if(!passwordMatch) {
+      return res.status(401).json({ message: 'Invalid Password' });
+    }
+  
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({ message: 'Login successful', token });
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
   }

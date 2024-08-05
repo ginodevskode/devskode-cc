@@ -28,7 +28,6 @@ const Login = () => {
 
   const onSubmit = async (data: loginData) => {
     const { email, password } = data;
-
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -36,15 +35,16 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const { message } = await response.json();
+      const { message, token } = await response.json();
 
       setMessage(message);
       setType(response.ok ? "success" : "error");
 
       if (response.ok) {
+        localStorage.setItem("authToken", token);
         setTimeout(() => {
-          router.push("/");
-        }, 1000);
+          
+        })
       }
     } catch (error) {
       setMessage("An unexpected error occurred.");
