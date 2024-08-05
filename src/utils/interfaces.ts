@@ -57,4 +57,9 @@ export interface ToastProps {
     type: "success" | "error" | "warning" | "info" | undefined;
 }
 
+export interface TransitionReturn {
+    isPending: boolean;
+    startTransition: (callback: () => void) => void;
+  }
+
 export type ToastStyle = "success" | "error" | "warning" | "info" | undefined;

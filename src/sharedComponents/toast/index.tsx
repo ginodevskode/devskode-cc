@@ -27,7 +27,7 @@ export const Toast = ({ open, setOpen, message, type }: ToastProps) => {
         <Alert
           onClose={handleClose}
           severity={type}
-          variant="outlined"
+          variant="filled"
           sx={{ width: "100%" }}
         >
           {message}

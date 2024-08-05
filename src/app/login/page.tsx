@@ -24,8 +24,21 @@ const Login = () => {
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<ToastStyle>();
 
-  const onSubmit = (data: loginData) => {
-    console.log(data);
+  const onSubmit = async (data: loginData) => {
+    const { email, password } = data;
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      const { message } = await response.json();
+      setMessage(message);
+      setType("error");
+      setOpen(true);
+      return;
+    }
   };
 
   return (
