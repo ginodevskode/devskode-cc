@@ -4,7 +4,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Image from "next/image";
 import data from "@/data.json";
 import { useState } from "react";
-import Modal from "./modal";
+import Modal from "./components/Form";
 
 const Profile = () => {
   const user = data.users[0];

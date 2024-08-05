@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const userSchema = Joi.object({
+export const userSchema = Joi.object({
   first_name: Joi.string()
     .min(3)
     .max(20)
@@ -61,4 +61,40 @@ const userSchema = Joi.object({
     }),
 });
 
-export default userSchema;
+export const profileSchema = Joi.object({
+  first_name: Joi.string()
+    .min(3)
+    .max(20)
+    .pattern(/^[a-zA-Z\s]*$/)
+    .messages({
+      'string.base': 'First name must contain only letters',
+      'string.min': 'First name must have at least 3 chars',
+      'string.max': 'First name cannot be more than 20 chars',
+      'string.pattern.base': 'First name must contain only letters',
+    }),
+  bio: Joi.string()
+    .min(3)
+    .max(200)
+    .required()
+    .messages({
+      'string.base': 'Bio must contain only letters',
+      'string.min': 'Bio must have at least 3 chars',
+      'string.max': 'Bio cannot be more than 200 chars',
+      'string.pattern.base': 'Bio must contain only letters',
+    }),
+    location: Joi.string()
+    .min(3)
+    .max(20)
+    .required()
+    .messages({
+      'string.base': 'Location must contain only letters',
+      'string.min': 'Location must have at least 3 chars',
+      'string.max': 'Location cannot be more than 20 chars',
+      'string.pattern.base': 'Location must contain only letters',
+    }),
+    web: Joi.string()
+    .pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
+    .messages({
+      'string.pattern.base': 'Website must have a valid format',
+    }),
+});

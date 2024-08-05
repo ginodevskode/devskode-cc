@@ -35,3 +35,10 @@ export interface UsersState {
 export interface PostsState {
     posts: Post[];
 }
+
+export interface Profile{
+    first_name: string,
+    bio: string,
+    location: string,
+    web: string,
+}
