@@ -23,8 +23,36 @@ const Register = () => {
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<ToastStyle>();
 
-  const onSubmit = (data: signupData) => {
-    console.log(data);
+  const onSubmit = async (data: signupData) => {
+    const { first_name, last_name, username, email, password } = data;
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name,
+          last_name,
+          username,
+          email,
+          password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage(result.message);
+        setType("success");
+      } else {
+        setMessage(result.message);
+        setType("error");
+      }
+    } catch (error) {
+      setMessage("An unexpected error occurred.");
+      setType("error");
+    } finally {
+      setOpen(true);
+    }
   };
 
   return (

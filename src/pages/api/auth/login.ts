@@ -1,12 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 import { User } from '@/utils/interfaces';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { email, password } = req.body;
+    console.log(email, password)
 
     const filePath = path.join(process.cwd(), 'src', 'data.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');

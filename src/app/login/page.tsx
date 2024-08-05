@@ -2,6 +2,7 @@
 import { Button, TextField, Typography } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,6 +20,7 @@ const Login = () => {
     mode: "onChange",
     resolver: joiResolver(loginSchema),
   });
+  const router = useRouter();
 
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -26,18 +28,29 @@ const Login = () => {
 
   const onSubmit = async (data: loginData) => {
     const { email, password } = data;
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
 
-    if (!response.ok) {
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
       const { message } = await response.json();
+
       setMessage(message);
+      setType(response.ok ? "success" : "error");
+
+      if (response.ok) {
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
+      }
+    } catch (error) {
+      setMessage("An unexpected error occurred.");
       setType("error");
+    } finally {
       setOpen(true);
-      return;
     }
   };
 
