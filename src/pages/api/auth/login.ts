@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { setCookie } from 'nookies';
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -35,6 +36,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       JWT_SECRET,
       { expiresIn: '1h' }
     );
+
+    setCookie({ res }, 'token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      maxAge: 60 * 60, 
+      path: '/',
+    });
 
     res.status(200).json({ message: 'Login successful', token });
   } else {

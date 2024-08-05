@@ -1,5 +1,11 @@
 "use client";
-import { Button, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Typography,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -10,6 +16,8 @@ import { useState } from "react";
 import { loginSchema } from "@/validations/users";
 import { loginData, ToastStyle } from "@/utils/interfaces";
 import { Toast } from "@/sharedComponents/toast";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   const {
@@ -25,6 +33,11 @@ const Login = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<ToastStyle>();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const onSubmit = async (data: loginData) => {
     const { email, password } = data;
@@ -43,8 +56,8 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem("authToken", token);
         setTimeout(() => {
-          
-        })
+          router.push("/");
+        }, 1000);
       }
     } catch (error) {
       setMessage("An unexpected error occurred.");
@@ -101,15 +114,28 @@ const Login = () => {
               <div>
                 <TextField
                   label="Password"
-                  id="password"
                   variant="outlined"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   fullWidth
                   {...register("password")}
                   error={!!errors.password}
                   helperText={
                     errors.password ? String(errors.password.message) : ""
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                          sx={{ color: "white" }}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {
@@ -147,7 +173,7 @@ const Login = () => {
               >
                 Log In
               </Button>
-              <Link href="/register">
+              <Link href="/signup">
                 <Typography sx={{ color: "#1DA1F2" }}>
                   Don&apos;t have an account? Sign Up
                 </Typography>
